@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="title">あなたの持っている本</h1>
+    <div class="buttons">
+        <a href="{{ url_for('main.profile') }}"
+           class="button is-link is-inverted is-fullwidth is-outlined is-rounded">マイページに戻る</a>
+        <a href="{{ url_for('books.register') }}"
+           class="button is-link is-inverted is-fullwidth is-outlined is-rounded">本を追加する</a>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}。
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% set vol = [''] %}
+    {% set n = [0] %}
+    {% for book in books %}
+        {% set _ = vol.append(vol[0] + (book.vol | string) + ', ') %}
+        {% set _ = vol.pop(0) %}
+        {% if not loop.nextitem or loop.nextitem.book_name != book.book_name %}
+            {% set _ = vol.append(vol[0][:-2] + '巻') %}
+            {% set _ = vol.pop(0) %}
+            {% if n[0] % 2 == 0 %}
+                <div class="tile is-ancestor">
+            {% endif %}
+
+        <div class="tile is-parent is-6">
+            <article class="tile is-child box">
+                <p class="title is-4" style="color: black">{{ book.book_name }}</p>
+                <p class="title is-6" style="color: black">持っている：{{ vol[0] }}</p>
+                <p class="title is-6" style="color: black">
+                    カテゴリー：
+                    {% for category in book.categories %}
+                        {{ category.category_name }}
+                        {% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+                <div class="buttons">
+                    <a href="{{ url_for('books.edit', series_id=book.series_id) }}"
+                       class="button is-info is-outlined is-fullwidth is-rounded">編集する</a>
+                    <a href="{{ url_for('books.delete', series_id=book.series_id) }}"
+                       class="button is-danger is-outlined is-fullwidth is-rounded">削除する</a>
+                    </button>
+                </div>
+            </article>
+
+        </div>
+
+        {% if n[0] % 2 == 1 %}
+            </div>
+        {% endif %}
+            {% set _ = n.append(n[0] + 1) %}
+            {% set _ = n.pop(0) %}
+            {% set _ = vol.append('') %}
+            {% set _ = vol.pop(0) %}
+        {% endif %}
+    {% endfor %}
+{% endblock %}

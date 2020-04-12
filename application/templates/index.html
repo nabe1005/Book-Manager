@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="title">
+        Book Manager
+    </h1>
+
+    <h2 class="subtitle">
+        あなたの本をWeb上で管理しましょう。
+    </h2>
+
+    <div class="buttons">
+        {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('auth.login') }}"
+                    class="button is-primary is-inverted is-outlined is-fullwidth is-rounded">ログイン</a>
+            <a href="{{ url_for('auth.signup') }}"
+                    class="button is-primary is-inverted is-outlined is-fullwidth is-rounded">新規登録</a>
+        {% else %}
+            <a href="{{ url_for('main.profile') }}"
+                class="button is-primary is-inverted is-outlined is-fullwidth is-rounded">マイページ</a>
+            <a href="{{ url_for('auth.logout') }}"
+                class="button is-primary is-inverted is-outlined is-fullwidth is-rounded">ログアウト</a>
+        {% endif %}
+    </div>
+{% endblock %}

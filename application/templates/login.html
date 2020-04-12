@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="column is-4 is-offset-4">
+        <h3 class="title">ログインする</h3>
+        <div class="buttons">
+            <a href="{{ url_for('main.index') }}"
+               class="button is-link is-inverted is-fullwidth is-outlined is-rounded">←　戻る</a>
+        </div>
+
+        <div class="box">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}。
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/login">
+                <label class="label has-text-left">メールアドレス</label>
+                <div class="field">
+                    <p class="control">
+                        <input class="input is-large" type="email" name="email" placeholder="example@gmail.com"
+                               autofocus="">
+                    </p>
+                </div>
+
+                <div class="field has-text-left">
+                    <label class="label">パスワード　
+                        <span class="icon is-small is-right">
+                            <i class="far fa-eye-slash toggle-password"></i>
+                        </span>
+                    </label>
+                    <div class="control has-icons-right">
+                        <input class="input is-large" type="password" id="password" name="password" placeholder="">
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="checkbox">
+                        <input type="checkbox">
+                        パスワードを保存する
+                    </label>
+                </div>
+                <input type="hidden" name="next" value="{{ next_page }}">
+                <button class="button is-block is-info is-large is-fullwidth">ログイン</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        $('.toggle-password').click(function () {
+            if ($(this).hasClass('fa-eye')) {
+                $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+                $('#password').attr('type', 'text');
+            } else {
+                $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+                $('#password').attr('type', 'password');
+            }
+        });
+    </script>
+{% endblock %}

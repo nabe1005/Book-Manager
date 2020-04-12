@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}。
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <h1 class="title">
+        こんにちは、{{ current_user.display_name }} さん
+    </h1>
+
+    <div class="buttons">
+        <a href="{{ url_for('books.index') }}"
+           class="button is-primary is-inverted is-outlined is-fullwidth is-rounded">本の一覧を確認する</a>
+        <a href="{{ url_for('books.register') }}"
+           class="button is-primary is-inverted is-outlined is-fullwidth is-rounded">本を追加する</a>
+        <a href="{{ url_for('auth.logout') }}"
+           class="button is-primary is-inverted is-outlined is-fullwidth is-rounded">ログアウト</a>
+    </div>
+{% endblock %}
