@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="334966fb-1c3b-4560-94fc-fbe509690492" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/application/categories.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/templates/categories_index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/application/templates/categories_register.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/books.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/books.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/cate.txt" beforeDir="false" afterPath="$PROJECT_DIR$/application/cate.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/application/models/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/books_index.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/books_index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/application/templates/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/application/templates/profile.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -157,7 +146,7 @@
       <workItem from="1588455527262" duration="2897000" />
       <workItem from="1588761416926" duration="1388000" />
       <workItem from="1589543100334" duration="189000" />
-      <workItem from="1589557147566" duration="1546000" />
+      <workItem from="1589557147566" duration="1694000" />
     </task>
     <servers />
   </component>

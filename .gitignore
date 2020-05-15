@@ -4,3 +4,4 @@
 .env
 bookmanager.db
 application/cate.txt
+sample.py
