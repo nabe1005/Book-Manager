@@ -22,6 +22,7 @@ class User(db.Model, UserMixin):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     books = db.relationship('Book', backref='owner', lazy=True)
+    categories = db.relationship('Category', backref='owner', lazy=True)
 
     def __init__(self, name, display_name, email, password):
         self.name = name
@@ -33,7 +34,7 @@ class User(db.Model, UserMixin):
 book_category = db.Table(
     'book_category',
     db.Column('series_id', db.Integer, db.ForeignKey('books.series_id'), primary_key=True, nullable=False),
-    db.Column('category_id', db.Integer, db.ForeignKey('categories.category_id'), primary_key=True, nullable=False)
+    db.Column('category_id', db.Integer, db.ForeignKey('categories.category_id'), primary_key=True, nullable=False),
 )
 
 
@@ -62,10 +63,12 @@ class Category(db.Model):
     __tablename__ = 'categories'
 
     category_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    category_name = db.Column(db.String(256), nullable=False, unique=True)
+    category_name = db.Column(db.String(256), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
-    def __init__(self, category_name):
+    def __init__(self, category_name, user_id):
         self.category_name = category_name
+        self.user_id = user_id
 
 
 class Place(db.Model):

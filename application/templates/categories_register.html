@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="column is-6 is-offset-3">
+        <h3 class="title">カテゴリを追加する</h3>
+        <div class="buttons">
+            <a href="{{ url_for('main.profile') }}"
+               class="button is-link is-inverted is-fullwidth is-outlined is-rounded">マイページに戻る</a>
+        </div>
+        <div class="box">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="notification is-danger">
+                        {{ messages[0] }}。
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <form method="POST" action="/categories/register">
+                <div class="field has-text-left">
+                    <label class="label">カテゴリ名</label>
+                    <div class="control">
+                        <input class="input is-large" type="text" name="name" placeholder="小説">
+                    </div>
+                </div>
+
+                <button class="button is-block is-info is-large is-fullwidth">追加</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

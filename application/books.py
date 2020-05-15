@@ -1,10 +1,7 @@
-from typing import Text
-
 from flask import *
 from application.models import User, Book, Category
 from application.database import db
 from flask_login import login_required, current_user
-import random
 
 books = Blueprint('books', __name__)
 
@@ -12,13 +9,47 @@ books = Blueprint('books', __name__)
 @books.route('/books/index')
 @login_required
 def index():
-    return render_template('books_index.html', books=current_user.books, title='本の一覧')
+    series_n = Book.query.filter_by(user_id=current_user.id).order_by(Book.series_id.desc()).first().series_id
+    series_n += 1
+    res = dict()
+
+    # シリーズの分だけ繰り返し
+    for i in range(1, series_n):
+        books = Book.query.filter_by(series_id=i, user_id=current_user.id).order_by(Book.vol).all()
+        display_vol = ''
+
+        # 巻数の表示
+        if books[-1].vol != 1:
+            display_vol = '持っている：1~'
+            for book in books:
+                if book.vol != 1:
+                    if book.vol != books[-1].vol:
+                        if prev_vol + 1 != book.vol:
+                            display_vol = display_vol[:-1] + ', ' + str(book.vol) + '~'
+                        prev_vol = book.vol
+                    else:
+                        if prev_vol + 1 != book.vol:
+                            display_vol = display_vol[:-1] + ', ' + str(book.vol) + '巻'
+                        else:
+                            display_vol += str(book.vol) + '巻'
+                else:
+                    prev_vol = 1
+
+        # カテゴリの取得
+        categories = []
+        for category in Book.query.filter_by(series_id=i, user_id=current_user.id).order_by(Book.vol).first().categories:
+            categories.append(category.category_name)
+
+        book = {i: {'name': book.book_name, 'vol': display_vol, 'categories': categories}}
+        res.update(book)
+
+    return render_template('books_index.html', books=current_user.books, res=jsonify(res), title='本の一覧')
 
 
 @books.route('/books/register', methods=['GET'])
 @login_required
 def register():
-    categories = Category.query.order_by(Category.category_id).all()
+    categories = current_user.categories
     return render_template('books_register.html', categories=categories, title='本の追加')
 
 
@@ -28,7 +59,7 @@ def register_post():
     book_name = request.form.get('name')
     series = request.form.get('series')
     vol = request.form.get('vol')
-    all_vol = request.form.get('all-vol')
+    # all_vol = request.form.get('all-vol')
     error_flag = True
 
     # バリデーション
@@ -69,7 +100,7 @@ def register_post():
                 new_books.append(new_book)
 
     # Categoriesの追加
-    for category in Category.query.order_by(Category.category_id).all():
+    for category in current_user.categories:
         if request.form.get(str(category.category_id)):
             new_books[0].categories.append(category)
 
@@ -94,7 +125,7 @@ def edit(series_id):
         flash('無効なURLです')
         return redirect(url_for('books.index'))
 
-    categories = Category.query.order_by(Category.category_id).all()
+    categories = current_user.categories
 
     return render_template('books_edit.html',
                            edit_books=edit_books, categories=categories, title='本の編集')
@@ -103,8 +134,6 @@ def edit(series_id):
 @books.route('/books/edit/<int:series_id>', methods=['POST'])
 @login_required
 def edit_post(series_id):
-    old_books = Book.query.filter_by(series_id=series_id, user_id=current_user.id).all()
-
     book_name = request.form.get('name')
     vol = request.form.get('vol')
 
@@ -123,7 +152,6 @@ def edit_post(series_id):
 
     # 更新データの用意
     add_books = []
-    delete_books = []
     if len(Book.query.filter_by(series_id=series_id, user_id=current_user.id).all()) > int(vol):
         i_length = len(Book.query.filter_by(series_id=series_id, user_id=current_user.id).all()) + 1
     else:
@@ -142,7 +170,7 @@ def edit_post(series_id):
                 Book.query.filter_by(series_id=series_id, vol=i, user_id=current_user.id).delete()
 
     add_books[0].categories.clear()
-    for category in Category.query.order_by(Category.category_id).all():
+    for category in current_user.categories:
         if request.form.get(str(category.category_id)):
             add_books[0].categories.append(category)
 
@@ -194,7 +222,7 @@ def delete(series_id):
 #             c_ids = []
 #             if vol == 1:
 #                 for d in range(random.randint(1, 3)):
-#                     c_n = Category.query.order_by(Category.category_id).all()
+#                     c_n = current_user.categories
 #                     c_ids.append(random.randint(1, len(c_n)))
 #             for c_id in c_ids:
 #                 new_book.categories.append(Category.query.filter_by(category_id=c_id).first())
@@ -220,7 +248,7 @@ def seed_c():
     new_categories = []
 
     for category in c:
-        new_categories.append(Category(category_name=category))
+        new_categories.append(Category(category_name=category, user_id=1))
 
     try:
         db.session.add_all(new_categories)

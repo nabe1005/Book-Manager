@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="title">あなたの持っている本</h1>
+    <div class="buttons">
+        <a href="{{ url_for('main.profile') }}"
+           class="button is-link is-inverted is-fullwidth is-outlined is-rounded">マイページに戻る</a>
+        <a href="{{ url_for('categories.register') }}"
+           class="button is-link is-inverted is-fullwidth is-outlined is-rounded">カテゴリを追加する</a>
+    </div>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}。
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% for category in categories %}
+            {% if loop.index0 % 3 == 0 %}
+                <div class="tile is-ancestor">
+            {% endif %}
+
+        <div class="tile is-parent is-4">
+            <article class="tile is-child box">
+                <p class="title is-4" style="color: black">{{ category.category_name }}</p>
+                <p class="title is-6" style="color: black">このカテゴリが登録されている本：{{ n[loop.index0] }}冊</p>
+
+                <div class="buttons">
+                    <a href="{{ url_for('categories.edit', category_id=category.category_id) }}"
+                       class="button is-info is-outlined is-fullwidth is-rounded">編集する</a>
+                    <a href="{{ url_for('categories.delete', category_id=category.category_id) }}"
+                       class="button is-danger is-outlined is-fullwidth is-rounded">削除する</a>
+                    </button>
+                </div>
+            </article>
+
+        </div>
+
+        {% if loop.index0 % 3 == 2 %}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

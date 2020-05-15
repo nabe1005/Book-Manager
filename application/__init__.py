@@ -6,6 +6,7 @@ from application.models import User, Book, Category
 from application.auth import auth as auth_blueprint
 from application.main import main as main_blueprint
 from application.books import books as books_blueprint
+from application.categories import categories as categories_blueprint
 
 
 def create_app():
@@ -25,6 +26,7 @@ def create_app():
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(main_blueprint)
     app.register_blueprint(books_blueprint)
+    app.register_blueprint(categories_blueprint)
 
     return app
 
