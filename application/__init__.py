@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_login import LoginManager
 
-from application.database import initialize_database
+from application.database import init_db
 from application.models import User, Book, Category
 from application.auth import auth as auth_blueprint
 from application.main import main as main_blueprint
@@ -12,7 +12,7 @@ from application.categories import categories as categories_blueprint
 def create_app():
     app = Flask(__name__)
     app.config.from_object('application.config.Config')
-    initialize_database(app)
+    init_db(app)
 
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
