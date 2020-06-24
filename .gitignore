@@ -1,6 +1,7 @@
 /venv/
 /migrations/
 /__pycache__/
+/.vscode/
 .env
 bookmanager.db
 application/cate.txt
